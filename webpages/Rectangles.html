@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Javascript-HTML5 Canvas-2D Animations-Code-Circles</title>
+  <meta name="description" content="Javascript HTML5 Canvas Animations with all source code
+  provided. Circle collisions, circle deflections, circles within circles, lots of boncing circles.">
+  <link rel="stylesheet" href="../css/styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+  integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+
+<body>
+
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">CanvasTutorialsABC</a>
+      </div>
+      <ul class="nav navbar-nav">
+        <li><a href="../index.html">Circles</a></li>
+        <li><a href="Triangles.html">Triangles</a></li>
+        <li class="active"><a href="#">Rectangles</a></li>
+        <li><a href="Squares.html">Squares</a></li>
+        <li><a href="Lines.html">Lines</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="center-block">
+
+      <p>
+        Working with rectangles is very similar to working with squares. All code
+        is below the HTML5 canvases.
+      </p>
+
+      <h3>DISAPPEARING RECTANGLES</h3>
+
+      <button class="btn btn-lg" id="stopBall">Stop</button>
+      <button class="btn btn-lg" id="startBall">Start</button>
+
+      <div>
+        <canvas id="myCanvas" width="960px" height="500px">
+          It seems that your browser doesn't support HTML5 Canvas.
+        </canvas>
+      </div>
+
+      <pre><code>
+        let canvas = document.getElementById("myCanvas");
+        let ctx = canvas.getContext("2d");
+        let t;
+        let timer_is_on1 = 0;
+
+        let ball = {x: 500, y: 430, dx: -4, dy: -3, radius: 10, color: 'white'};
+
+        let blocks = [{x:0, y:0, width:50, height:100, color:'orange'},
+                      {x:0, y:100, width:50, height:100, color:'green'},
+                      {x:0, y:200, width:50, height:100, color:'blue'},
+                      {x:0, y:300, width:50, height:100, color:'red'},
+                      {x:0, y:400, width:50, height:100, color:'white'},
+                      {x:50, y:0, width:50, height:100, color:'green'},
+                      {x:50, y:100, width:50, height:100, color:'blue'},
+                      {x:50, y:200, width:50, height:100, color:'red'},
+                      {x:50, y:300, width:50, height:100, color:'white'},
+                      {x:50, y:400, width:50, height:100, color:'orange'},
+                      {x:100, y:0, width:50, height:100, color:'blue'},
+                      {x:100, y:100, width:50, height:100, color:'red'},
+                      {x:100, y:200, width:50, height:100, color:'white'},
+                      {x:100, y:300, width:50, height:100, color:'orange'},
+                      {x:100, y:400, width:50, height:100, color:'green'},
+                      {x:150, y:0, width:50, height:100, color:'red'},
+                      {x:150, y:100, width:50, height:100, color:'white'},
+                      {x:150, y:200, width:50, height:100, color:'orange'},
+                      {x:150, y:300, width:50, height:100, color:'green'},
+                      {x:150, y:400, width:50, height:100, color:'blue'},
+                      {x:200, y:0, width:50, height:100, color:'white'},
+                      {x:200, y:100, width:50, height:100, color:'orange'},
+                      {x:200, y:200, width:50, height:100, color:'green'},
+                      {x:200, y:300, width:50, height:100, color:'blue'},
+                      {x:200, y:400, width:50, height:100, color:'red'},
+                      {x:910, y:0, width:50, height:100, color:'orange'},
+                      {x:910, y:100, width:50, height:100, color:'green'},
+                      {x:910, y:200, width:50, height:100, color:'blue'},
+                      {x:910, y:300, width:50, height:100, color:'red'},
+                      {x:910, y:400, width:50, height:100, color:'white'},
+                      {x:860, y:0, width:50, height:100, color:'green'},
+                      {x:860, y:100, width:50, height:100, color:'blue'},
+                      {x:860, y:200, width:50, height:100, color:'red'},
+                      {x:860, y:300, width:50, height:100, color:'white'},
+                      {x:860, y:400, width:50, height:100, color:'orange'},
+                      {x:810, y:0, width:50, height:100, color:'blue'},
+                      {x:810, y:100, width:50, height:100, color:'red'},
+                      {x:810, y:200, width:50, height:100, color:'white'},
+                      {x:810, y:300, width:50, height:100, color:'orange'},
+                      {x:810, y:400, width:50, height:100, color:'green'},
+                      {x:760, y:0, width:50, height:100, color:'red'},
+                      {x:760, y:100, width:50, height:100, color:'white'},
+                      {x:760, y:200, width:50, height:100, color:'orange'},
+                      {x:760, y:300, width:50, height:100, color:'green'},
+                      {x:760, y:400, width:50, height:100, color:'blue'},
+                      {x:710, y:0, width:50, height:100, color:'white'},
+                      {x:710, y:100, width:50, height:100, color:'orange'},
+                      {x:710, y:200, width:50, height:100, color:'green'},
+                      {x:710, y:300, width:50, height:100, color:'blue'},
+                      {x:710, y:400, width:50, height:100, color:'red'}];
+
+        function draw() {
+          ctx.clearRect(0,0,960,500);
+          drawBall();
+          buildBlocks();
+          hitCanvasWall();
+          hitBlock();
+        }
+
+        function drawBall() {
+          ctx.beginPath();
+          ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI*2, true);
+          ctx.closePath();
+          ctx.fillStyle = ball.color;
+          ctx.fill()
+
+          ball.x += ball.dx;
+          ball.y += ball.dy;
+        }
+
+        function buildBlocks() {
+          blocks.forEach(function(block) {
+            ctx.fillStyle = block.color;
+            ctx.fillRect(block.x, block.y, block.width, block.height);
+          });
+        }
+
+        function hitCanvasWall() {
+          if (ball.x <= ball.radius ) {
+            ball.x = ball.radius;
+            ball.dx = -ball.dx;
+          } else if (ball.x >= canvas.width - ball.radius) {
+            ball.x = canvas.width - ball.radius;
+            ball.dx = -ball.dx;
+          } else if (ball.y <= ball.radius) {
+            ball.y = ball.radius;
+            ball.dy = -ball.dy;
+          } else if (ball.y >= canvas.height - ball.radius) {
+            ball.y = canvas.height - ball.radius;
+            ball.dy = -ball.dy;
+          }
+        }
+
+        function hitBlock() {
+            for (i=0; i< blocks.length; i+=1) {
+              if ( (ball.x <= blocks[i].x + blocks[i].width) && (ball.x >= blocks[i].x)
+                    && (ball.y >= blocks[i].y) && (ball.y <= blocks[i].y + blocks[i].height) ) {
+                  if ( (ball.x >= blocks[i].x + blocks[i].width - ball.radius) ||
+                    (ball.x <= blocks[i].x + ball.radius) ) {
+                    ball.dx = -ball.dx;
+                    blocks.splice([i],1);
+                  } else {
+                    ball.dy = -ball.dy;
+                    blocks.splice([i],1);
+                  }
+              }
+            }
+        }
+
+        function stopBall() {
+            clearInterval(t);
+            timer_is_on1 = 0;
+        }
+
+        function startBall() {
+          if (!timer_is_on1) {
+              timer_is_on1 = 1;
+              t = setInterval(draw,35);
+          }
+        }
+        draw();
+      </code></pre>
+
+      <h3>ROCKETS... CLICK TO LAUNCH</h3>
+
+      <button class="btn btn-lg" id="startRocket">Launch!</button>
+
+      <div>
+        <canvas id="myCanvas18" width="960px" height="500px">
+          It seems that your browser doesn't support HTML5 Canvas.
+        </canvas>
+      </div>
+
+      <pre><code>
+        let canvas = document.getElementById("myCanvas");
+        let ctx = canvas.getContext("2d");
+
+        let t;
+        let timer_is_on = 0;
+
+        let rocket1 = {x:465, y:400, width:30, height:100, dy: -15, color: "red"};
+        let rocket2 = {x:0, y:230, width:150, height:40, dx: 16, color: "blue"};
+
+        function drawRocketUp(rocket) {
+          ctx.fillStyle = rocket.color;
+          ctx.fillRect(rocket.x,rocket.y,rocket.width,rocket.height);
+
+          rocket.y += rocket.dy;
+          rocket.dy += 0.29;
+
+          if (rocket.y + rocket.height > canvas.height) {
+            rocket.y = 400;
+            rocket.dy = 0;
+
+            ctx.fillStyle = rocket.color;
+            ctx.fillRect(rocket.x,rocket.y,rocket.width,rocket.height);
+          }
+        }
+
+        function drawRocketRight(rocket) {
+          ctx.fillStyle = rocket.color;
+          ctx.fillRect(rocket.x,rocket.y,rocket.width,rocket.height);
+
+          rocket.x += rocket.dx;
+          rocket.dx -= 0.21;
+
+          if (rocket.x < 0) {
+            rocket.x = 0;
+            rocket.dx = 0;
+
+            ctx.fillStyle = rocket.color;
+            ctx.fillRect(rocket.x,rocket.y,rocket.width,rocket.height);
+          }
+        }
+
+        function rocketsLanded() {
+          if (rocket1.y === 400 && rocket2.x === 0) {
+            clearInterval(t);
+            timer_is_on = 0;
+          }
+        }
+
+        function launchRockets() {
+          ctx.clearRect(0,0,canvas.width,canvas.height);
+
+          drawRocketUp(rocket1);
+          drawRocketRight(rocket2);
+          rocketsLanded();
+        }
+
+        function startRocket() {
+          if (!timer_is_on) {
+              timer_is_on = 1;
+              rocket1 = {x:465, y:400, width:30, height:100, dy: -15, color: "red"};
+              rocket2 = {x:0, y:230, width:150, height:40, dx: 15.5, color: "blue"};
+              t = setInterval(launchRockets,50);
+          }
+        }
+
+        drawRocketUp(rocket1);
+        drawRocketRight(rocket2);
+
+      </code></pre>
+
+      <h3>3 BOUNCING RECTANGLES</h3>
+
+      <button class="btn btn-lg" id="reset11">Stop</button>
+      <button class="btn btn-lg" id="startSquare11">Start</button>
+
+      <div>
+        <canvas id="canvas14" width="960px" height="500px">
+          It seems that your browser doesn't support HTML5 Canvas.
+        </canvas>
+      </div>
+
+      <p>
+        The Javascript code for the bouncing rectangles...
+      </p>
+
+      <pre><code>
+        let canvas = document.getElementById('myCanvas');
+        let ctx = canvas.getContext('2d');
+
+        let timer_is_on = 0;
+        let b;
+
+        let box1 = {x: 150, y: 100, color: 'blue', dx: -5, dy: -2, width: 350, height: 200};
+        let box2 = {x: 750, y: 150, color: 'green', dx: -2, dy: 5, width: 120, height: 150};
+        let box3 = {x: 450, y: 350, color: 'yellow', dx: 5, dy: -5, width: 250, height: 50};
+
+        function draw() {
+          ctx.clearRect(0,0,960,500);
+          drawSquare(box1);
+          drawSquare(box2);
+          drawSquare(box3);
+        }
+
+        function drawSquare(box) {
+          ctx.fillStyle = box.color;
+          ctx.fillRect(box.x, box.y, box.width, box.height);
+
+          if ((box.x >= canvas.width - box.width) || (box.x <= 0)) {
+            box.dx = -box.dx;
+          }
+          if ((box.y >= canvas.height - box.height) || (box.y <= 0)) {
+            box.dy = -box.dy;
+          }
+
+          box.x += box.dx;
+          box.y += box.dy;
+        }
+
+        function stop() {
+            clearInterval(b);
+            timer_is_on = 0;
+        }
+
+        function startRectangles() {
+          if (!timer_is_on) {
+              timer_is_on = 1;
+              b = setInterval(draw,70);
+          }
+        }
+
+        draw();
+
+      </code></pre>
+
+      <p>Every time there's contact the white square/rectangle's width increases.
+        If the white rectangle grows horizontally to the point that it's right
+        side is off the canvas it's width resets to it's original width.
+      </p>
+
+      <h3>GROWING WHITE RECTANGLE</h3>
+
+      <button class="btn btn-lg" id="reset12">Stop</button>
+      <button class="btn btn-lg" id="startSquare12">Start</button>
+
+      <div>
+        <canvas id="canvas19" width="960px" height="500px">
+          It seems that your browser doesn't support HTML5 Canvas.
+        </canvas>
+      </div>
+
+      <pre><code>
+        let canvas = document.getElementById('myCanvas');
+        let ctx = canvas.getContext('2d');
+
+        let c;
+        let timer_is_on10 = 0;
+
+        let bigGreen = {x: 280, y: 150, color: 'green', dx: 3, dy: 3, width: 150, height: 150};
+        let smallWhite = {x: 150, y: 50, color: 'white', dx: 7, dy: 7, width: 20, height: 20};
+
+        function boxCollision() {
+
+          if ((bigGreen.x >= canvas.width - bigGreen.width) || (bigGreen.x <= 0)) {
+            bigGreen.dx = -bigGreen.dx;
+          }
+          if ((bigGreen.y >= canvas.height - bigGreen.height) || (bigGreen.y <= 0)) {
+            bigGreen.dy = -bigGreen.dy;
+          }
+          if ((smallWhite.x >= canvas.width - smallWhite.width) || (smallWhite.x <= 0)) {
+            smallWhite.dx = -smallWhite.dx;
+          }
+          if ((smallWhite.y >= canvas.height - smallWhite.height) || (smallWhite.y <= 0)) {
+            smallWhite.dy = -smallWhite.dy;
+          }
+        }
+
+        function drawCanvas() {
+          ctx.clearRect(0,0,960,500);
+
+          ctx.fillStyle = smallWhite.color;
+          ctx.fillRect(smallWhite.x, smallWhite.y, smallWhite.width, smallWhite.height);
+
+          ctx.fillStyle = bigGreen.color;
+          ctx.fillRect(bigGreen.x, bigGreen.y, bigGreen.width, bigGreen.height);
+        }
+
+        function drawBoxes() {
+          growBoxes();
+          drawCanvas();
+          boxCollision();
+
+          bigGreen.x += bigGreen.dx;
+          bigGreen.y += bigGreen.dy;
+
+          smallWhite.x += smallWhite.dx;
+          smallWhite.y += smallWhite.dy;
+        }
+
+        function growBoxes() {
+          if (bigGreen.x < smallWhite.x + smallWhite.width &&
+             bigGreen.x + bigGreen.width > smallWhite.x &&
+             bigGreen.y < smallWhite.y + smallWhite.height &&
+             bigGreen.height + bigGreen.y > smallWhite.y) {
+
+              smallWhite.width += 5;
+
+                if (smallWhite.x + smallWhite.width >= canvas.width) {
+                  smallWhite.width = 20;
+                }
+          }
+        }
+
+        function stop() {
+            clearInterval(c);
+            timer_is_on10 = 0;
+        }
+
+        function startRectangles() {
+          if (!timer_is_on10) {
+              timer_is_on10 = 1;
+              c = setInterval(drawBoxes,70);
+          }
+        }
+
+        drawBoxes();
+      </code></pre>
+
+  </div>
+    </div>
+
+
+  <script src="../js/Rectangles1.js"></script>
+  <script src="../js/Rectangles3.js"></script>
+  <script src="../js/Rectangles4.js"></script>
+  <script src="../js/Rectangles5.js"></script>
+
+</body>
+
+
+</html>

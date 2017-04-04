@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Javascript-HTML5 Canvas-2D Animations-Code-Circles</title>
+  <meta name="description" content="Javascript HTML5 Canvas Animations with all source code
+  provided. Circle collisions, circle deflections, circles within circles, lots of boncing circles.">
+  <link rel="stylesheet" href="../css/styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+  integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+
+<body>
+
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">CanvasTutorialsABC</a>
+      </div>
+      <ul class="nav navbar-nav">
+        <li><a href="../index.html">Circles</a></li>
+        <li><a href="Triangles.html">Triangles</a></li>
+        <li><a href="Rectangles.html">Rectangles</a></li>
+        <li><a href="Squares.html">Squares</a></li>
+        <li class="active"><a href="#">Lines</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="center-block">
+
+        <p>
+          Javascript code is below the canvas. Scroll down
+          for more drawing and animating of lines.
+        </p>
+
+        <h3>RANDOMLY DRAWN LINES</h3>
+
+        <button class="btn btn-lg" id="redraw">Redraw</button>
+
+        <div>
+          <canvas id="myCanvas3" width="960" height="500">
+            It seems that your browser doesn't support HTML5 Canvas.
+          </canvas>
+        </div>
+
+        <p>
+          The Javascript code...
+        </p>
+
+        <pre><code>
+        let canvas = document.getElementById("myCanvas");
+        let ctx = canvas.getContext('2d');
+
+        function makeCircle(x,y) {
+          ctx.beginPath();
+          ctx.arc(x, y, 6, 0, Math.PI*2, true);
+          ctx.closePath();
+          ctx.fillStyle = "blue";
+          ctx.fill();
+        }
+
+        function makeLine(a,b,c,d) {
+
+          let ranColor1 = Math.floor((Math.random() * 155) + 100);
+          let ranColor2 = Math.floor((Math.random() * 255) + 1);
+          let ranColor3 = Math.floor((Math.random() * 255) + 1);
+
+          let lineColor = 'rgb('+ranColor1+','+ranColor2+','+ranColor3+')';
+
+          ctx.beginPath();
+          ctx.moveTo(a,b);
+          ctx.lineTo(c,d);
+          ctx.strokeStyle = lineColor;
+          ctx.lineWidth = "6";
+          ctx.stroke();
+        }
+
+        function draw() {
+
+          for(let i=0; i< 20; i++) {
+            let randomX1 = Math.random() * 960;
+            let randomX2 = Math.random() * 960;
+            let randomY1 = Math.random() * 500;
+            let randomY2 = Math.random() * 500;
+
+            makeCircle(randomX1, randomY1);
+            makeCircle(randomX2, randomY2);
+            makeLine(randomX1,randomY1,randomX2,randomY2);
+          }
+        }
+
+        function redraw() {
+          ctx.clearRect(0,0,canvas.width,canvas.height);
+          draw();
+        }
+
+        draw();
+
+      </code></pre>
+
+      <h3>A RANDOM LINE BOUNCING OFF CANVAS WALLS</h3>
+
+      <button class="btn btn-lg" id="reset">Stop</button>
+      <button class="btn btn-lg" id="startLine">Start</button>
+      <button class="btn btn-lg" id="totalReset">Restart</button>
+
+
+        <div>
+          <canvas id="myCanvas4" width="960" height="500">
+            It seems that your browser doesn't support HTML5 Canvas.
+          </canvas>
+        </div>
+
+      <pre><code>
+        let canvas = document.getElementById("myCanvas");
+        let ctx = canvas.getContext('2d');
+
+        let randX1,randX2,randY1,randY2;
+        let t;
+
+        let dx1 = 5;
+        let dy1 = 5;
+        let dx2 = 5;
+        let dy2 = 5;
+
+        let timer_is_on = 0;
+
+        function makeCircle(x,y) {
+          ctx.beginPath();
+          ctx.arc(x, y, 8, 0, Math.PI*2, true);
+          ctx.closePath();
+          ctx.fillStyle = "blue";
+          ctx.fill();
+        }
+
+        function makeLine(a,b,c,d) {
+          ctx.beginPath();
+          ctx.moveTo(a,b);
+          ctx.lineTo(c,d);
+          ctx.strokeStyle = "blue";
+          ctx.lineWidth = "5";
+          ctx.stroke();
+        }
+
+        function randomNum() {
+          randX1 = Math.floor(Math.random() * 300 + 25);
+          randY1 = Math.floor(Math.random() * 300 + 25);
+          randX2 = randX1 + 150;
+          randY2 = randY1 + 150;
+        }
+
+        function draw() {
+            ctx.clearRect(0,0,960,500);
+            randX1 += dx1;
+            randY1 += dy1;
+
+            randX2 += dx2;
+            randY2 += dy2;
+
+            makeCircle(randX1, randY1);
+            makeCircle(randX2, randY2);
+            makeLine(randX1,randY1,randX2,randY2);
+
+            if (randX1 > canvas.width) {
+              randX1 = canvas.width;
+              dx1 = -dx1;
+            } else if (randX1 < 0) {
+              randX1 = 0;
+              dx1 = -dx1;
+            }
+            else if (randX2 > canvas.width) {
+              randX2 = canvas.width;
+              dx2 = -dx2;
+            }
+            else if (randX2 < 0) {
+              randX2 = 0;
+              dx2 = -dx2;
+            } else if (randY1 > canvas.height) {
+              randY1 = canvas.height;
+              dy1 = -dy1;
+            } else if (randY1 < 0) {
+              randY1 = 0;
+              dy1 = -dy1;
+            } else if (randY2 > canvas.height) {
+              randY2 = canvas.height;
+              dy2 = -dy2;
+            } else if (randY2 < 0) {
+              randY2 = 0;
+              dy2 = -dy2;
+            }
+        }
+
+        function reset() {
+            clearInterval(t);
+            timer_is_on = 0;
+        }
+
+        function startLine() {
+          if (!timer_is_on) {
+              timer_is_on = 1;
+              t = setInterval(draw,90);
+          }
+        }
+
+        function totalReset() {
+          randomNum();
+
+          dx1 = 5;
+          dy1 = 5;
+          dx2 = 5;
+          dy2 = 5;
+
+          timer_is_on = 0;
+          clearInterval(t);
+          startLine();
+        }
+
+        randomNum();
+        draw();
+
+      </code></pre>
+
+  </div>
+    </div>
+
+  <script src="../js/Lines3.js"></script>
+  <script src="../js/Lines4.js"></script>
+</body>
+</html>

@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Javascript-HTML5 Canvas-2D Animations-Code-Circles</title>
+  <meta name="description" content="Javascript HTML5 Canvas Animations with all source code
+  provided. Circle collisions, circle deflections, circles within circles, lots of boncing circles.">
+  <link rel="stylesheet" href="css/styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+  integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+
+<body>
+
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">CanvasTutorialsABC</a>
+      </div>
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Circles</a></li>
+        <li><a href="./webpages/Triangles.html">Triangles</a></li>
+        <li><a href="./webpages/Rectangles.html">Rectangles</a></li>
+        <li><a href="./webpages/Squares.html">Squares</a></li>
+        <li><a href="./webpages/Lines.html">Lines</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="center-block">
+
+      <p>
+      In this animation a circle moves back and forth horizontally across an HTML5 canvas
+      using vanilla Javascript. Click the start button to begin.
+      The Javascript code for this animation is below the canvas. Keep scrolling down the
+      page to view more canvas circle projects.
+      </p>
+
+      <h3>BLUE BALL MOVING HORIZONTALLY</h3>
+
+      <button class="btn btn-lg" id="reset5">Stop</button>
+      <button class="btn btn-lg" id="startBalls5">Start</button>
+
+      <div>
+        <canvas id="myCanvas5" width="960" height="600">
+          It seems that your browser doesn't support HTML5 Canvas.
+        </canvas>
+      </div>
+
+      <p>
+        HTML
+      </p>
+
+      <pre><code>
+        &lt;body&gt;
+          &lt;div&gt;
+            &lt;canvas id="myCanvas" width="960" height="500"&gt;&lt;/canvas&gt;
+          &lt;/div&gt;
+        &lt;/body&gt;
+      </code></pre>
+
+      <p>
+        CSS
+      </p>
+
+      <pre><code>
+        canvas {
+          background-color: black;
+        }
+      </code></pre>
+
+      <p>
+        The Javascript code...
+      </p>
+
+      <pre><code>
+        let canvas = document.getElementById("myCanvas");
+        let ctx = canvas.getContext('2d');
+        let timer_is_on = 0
+        let t;
+
+        let ball1 = {
+          x: 280,
+          y: 300,
+          dx: 5,
+          radius: 110,
+          color: 'blue'
+        };
+
+        // to get the initial stationary blue ball on the canvas
+        function start() {
+          ctx.beginPath();
+          ctx.arc(ball1.x, ball1.y, ball1.radius, 0, Math.PI*2, true);
+          ctx.closePath();
+          ctx.fillStyle = ball1.color;
+          ctx.fill();
+        };
+
+        function draw() {
+          ctx.clearRect(0,0,canvas.width,canvas.height);
+          updateCircle(ball1);
+        };
+
+        function updateCircle() {
+          ctx.beginPath();
+          ctx.arc(ball1.x, ball1.y, ball1.radius, 0, Math.PI*2, true);
+          ctx.closePath();
+          ctx.fillStyle = ball1.color;
+          ctx.fill();
+
+          if (ball1.x > canvas.width - ball1.radius || ball1.x < ball1.radius) {
+            ball1.dx =- ball1.dx;
+          }
+
+          ball1.x += ball1.dx;
+        };
+
+        // stop button
+        function stop() {
+            clearInterval(t);
+            timer_is_on = 0;
+        }
+
+        // start button
+        function startBall() {
+          if (!timer_is_on) {
+              timer_is_on = 1;
+              t = setInterval(draw, 50);
+          }
+        }
+
+        start();
+      </code></pre>
+
+      <h3>BOUNCING BIG BLUE AND SMALL RED CIRCLES</h3>
+
+      <button class="btn btn-lg" id="reset4">Stop</button>
+      <button class="btn btn-lg" id="startBalls4">Start</button>
+
+        <div>
+          <canvas id="myCanvas6" width="960" height="600">
+            It seems that your browser doesn't support HTML5 Canvas.
+          </canvas>
+        </div>
+
+        <pre><code>
+        let canvas = document.getElementById('myCanvas');
+        let ctx = canvas.getContext('2d');
+        let t, timer_is_on;
+
+        let ball1 = {
+          x: 180,
+          y: 200,
+          dx: 5,
+          dy: 5,
+          radius: 50,
+          color: 'red'
+        };
+
+        let ball2 = {
+          x: 700,
+          y: 400,
+          dx: -5,
+          dy: 5,
+          radius: 110,
+          color: 'blue'
+        };
+
+        // to draw the initial two circles on the canvas
+        function start() {
+          ctx.beginPath();
+          ctx.arc(ball1.x, ball1.y, ball1.radius, 0, Math.PI*2, true);
+          ctx.closePath();
+          ctx.fillStyle = ball1.color;
+          ctx.fill();
+
+          ctx.beginPath();
+          ctx.arc(ball2.x, ball2.y, ball2.radius, 0, Math.PI*2, true);
+          ctx.closePath();
+          ctx.fillStyle = ball2.color;
+          ctx.fill();
+        }
+
+        function draw() {
+          ctx.clearRect(0,0,canvas.width,canvas.height);
+          updateCircle(ball2);
+          updateCircle(ball1);
+        }
+
+        function updateCircle(ball) {
+          ctx.beginPath();
+          ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI*2, true);
+          ctx.closePath();
+          ctx.fillStyle = ball.color;
+          ctx.fill();
+
+          if (ball.x > canvas.width - ball.radius || ball.x < ball.radius) {
+            ball.dx =- ball.dx;
+          }
+          if (ball.y > canvas.height - ball.radius || ball.y < ball.radius) {
+            ball.dy =- ball.dy;
+          }
+          ball.x += ball.dx;
+          ball.y += ball.dy;
+
+        }
+
+        // stop button
+        function stop() {
+            clearInterval(t);
+            timer_is_on = 0;
+        }
+
+        // start button
+        function startBalls() {
+          if (!timer_is_on) {
+              timer_is_on = 1;
+              t = setInterval(draw, 50);
+          }
+        }
+
+        start();
+      </code></pre>
+
+    <h3>12 SMALL COLORFUL BOUNCING CIRCLES</h3>
+
+    <button class="btn btn-lg" id="reset2">Stop</button>
+    <button class="btn btn-lg" id="startBalls2">Start</button>
+
+
+    <div>
+      <canvas id="myCanvas8" width="960" height="600">
+        It seems that your browser doesn't support HTML5 Canvas.
+      </canvas>
+    </div>
+
+    <pre><code>
+        let canvas = document.getElementById('myCanvas');
+        let ctx = canvas.getContext('2d');
+        let timer_is_on = 0;
+        let w;
+
+        let circles = [{x:100,y:200,dx:-10,dy:5,radius:40,color:'#99CCFF'},
+                    {x:200,y:500,dx:5,dy:-5,radius:40,color:'#C69633'},
+                    {x:250,y:150,dx:-5,dy:10,radius:40,color:'#000090'},
+                    {x:300,y:500,dx:12,dy:-3,radius:40,color:'red'},
+                    {x:450,y:250,dx:-3,dy:13,radius:40,color:'lime'},
+                    {x:600,y:350,dx:8,dy:-8,radius:40,color:'purple'},
+                    {x:750,y:350,dx:-2,dy:10,radius:40,color:'blue'},
+                    {x:900,y:400,dx:9,dy:-4,radius:40,color:'orange'},
+                    {x:650,y:250,dx:-16,dy:4,radius:40,color:'#FF9C00'},
+                    {x:300,y:400,dx:10,dy:-5,radius:40,color:'#C9C9F3'},
+                    {x:500,y:350,dx:-8,dy:4,radius:40,color:'pink'},
+                    {x:150,y:100,dx:7,dy:-5,radius:40,color:'#585858'}];
+
+        function draw() {
+          ctx.clearRect(0,0,canvas.width,canvas.height);
+
+            circles.forEach(function(ball) {
+              ball.x += ball.dx;
+              ball.y += ball.dy;
+
+              ctx.beginPath();
+              ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI*2, true);
+              ctx.closePath();
+              ctx.fillStyle = ball.color;
+              ctx.fill();
+
+                if (ball.x >= (canvas.width-ball.radius) || ball.x <= ball.radius) {
+                  ball.dx =- ball.dx;
+                }
+                if (ball.y >= (canvas.height-ball.radius) || ball.y <= ball.radius) {
+                  ball.dy =- ball.dy;
+                }
+            });
+        };
+
+        function start() {
+            circles.forEach(function(ball) {
+
+              ball.x += ball.dx;
+              ball.y += ball.dy;
+
+              ctx.beginPath();
+              ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI*2, true);
+              ctx.closePath();
+              ctx.fillStyle = ball.color;
+              ctx.fill();
+            });
+        };
+
+
+        function stop() {
+            clearInterval(w);
+            timer_is_on = 0;
+        }
+
+        function startCircles() {
+          if (!timer_is_on) {
+              timer_is_on = 1;
+              w = setInterval(draw, 100);
+          }
+        }
+
+        start();
+
+    </code></pre>
+
+    <p>
+      Bounce some circles, deflect them off each other, get smaller after contact,
+      and change colors randomly(bright colors). Note: these are not elastic
+      collisions but are merely reversing direction upon impact.
+    </p>
+
+    <h3>BOUNCING - CHANGE COLOR - GET SMALLER AFTER COLLISION CIRCLES</h3>
+
+    <button class="btn btn-lg" id="reset">Stoid</button>
+    <button class="btn btn-lg" id="startBalls">Start</button>
+    <button class="btn btn-lg" id="totalReset">Restart</button>
+
+    <div>
+      <canvas id="myCanvas9" width="960" height="600">
+        It seems that your browser doesn't support HTML5 Canvas.
+      </canvas>
+    </div>
+
+    <pre><code>
+        let canvas = document.getElementById('myCanvas');
+        let ctx = canvas.getContext('2d');
+
+        let timer_is_on;
+
+        let ball1 = {
+          x: 700,
+          y: 450,
+          dx: 13,
+          dy: 9,
+          radius: 100,
+          color: 'blue'
+        };
+
+        let ball2 = {
+        x: 170,
+        y: 170,
+        dx: 7,
+        dy: 14,
+        radius: 100,
+        color: 'lime'
+        };
+
+        let ball3 = {
+        x: 380,
+        y: 410,
+        dx: 5,
+        dy: 5,
+        radius: 100,
+        color: 'orange'
+        };
+
+        let ball4 = {
+        x: 650,
+        y: 140,
+        dx: 17,
+        dy: 3,
+        radius: 100,
+        color: 'green'
+        };
+
+        function canvasStart(ball) {
+          ctx.beginPath();
+          ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI*2, true);
+          ctx.closePath();
+          ctx.fillStyle = ball.color;
+          ctx.fill();
+        }
+
+        function draw() {
+          ctx.clearRect(0,0,canvas.width,canvas.height);
+
+          updateCircle(ball1);
+          updateCircle(ball2);
+          updateCircle(ball3);
+          updateCircle(ball4);
+
+          ballCollision(ball1, ball2);
+          ballCollision(ball1, ball3);
+          ballCollision(ball1, ball4);
+          ballCollision(ball2, ball3);
+          ballCollision(ball2, ball4);
+          ballCollision(ball3, ball4);
+        }
+
+        function updateCircle(ball) {
+          ball.x += ball.dx;
+          ball.y += ball.dy;
+
+          ctx.beginPath();
+          ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI*2, true);
+          ctx.closePath();
+          ctx.fillStyle = ball.color;
+          ctx.fill();
+
+          if (ball.x >= (canvas.width-ball.radius) || ball.x <= ball.radius) {
+            ball.dx =- ball.dx;
+          }
+          if (ball.y >= (canvas.height-ball.radius) || ball.y <= ball.radius) {
+            ball.dy =- ball.dy;
+          }
+        }
+
+        function ballDeflect(a, b) {
+            if (b.x >= b.radius && b.x <= (canvas.width-b.radius) && b.y >= b.radius && b.y <=
+            (canvas.height-b.radius) && a.x >= a.radius && a.x <= (canvas.width-a.radius) &&
+            a.y >= a.radius && a.y <= (canvas.height-a.radius) ) {
+
+                  a.dx =- a.dx;
+                  a.dy =- a.dy;
+
+                  b.dx =- b.dx;
+                  b.dy =- b.dy;
+
+              let random1 = Math.floor((Math.random() * 155) + 100);
+              let random2 = Math.floor((Math.random() * 255) + 1);
+              let random3 = Math.floor((Math.random() * 255) + 1);
+              let random4 = Math.floor((Math.random() * 155) + 100);
+              let random5 = Math.floor((Math.random() * 255) + 1);
+              let random6 = Math.floor((Math.random() * 255) + 1);
+
+              a.color = 'rgb('+random1+','+random2+','+random3+')';
+              b.color = 'rgb('+random4+','+random5+','+random6+')';
+            }
+        }
+
+        function ballCollision(a, b){
+          let xDist = (a.x - b.x) * (a.x - b.x);
+          let yDist = (a.y - b.y) * (a.y - b.y);
+
+          if ((Math.sqrt(xDist + yDist)) < (a.radius * 1.03 + b.radius * 1.03) ){
+            b.radius *= 0.95;
+            a.radius *= 0.95;
+
+            ballDeflect(a, b);
+          }
+        }
+
+        function stop() {
+            clearInterval(v);
+            timer_is_on = 0;
+        }
+
+        function startCircles() {
+          if (!timer_is_on) {
+              timer_is_on = 1;
+              v = setInterval(draw, 130);
+          }
+        }
+
+        function totalReset() {
+
+          ball1 = {
+            x: 700,
+            y: 450,
+            dx: 13,
+            dy: 9,
+            radius: 100,
+            color: 'blue'
+          };
+
+          ball2 = {
+          x: 170,
+          y: 170,
+          dx: 7,
+          dy: 14,
+          radius: 100,
+          color: 'lime'
+          };
+
+          ball3 = {
+          x: 380,
+          y: 410,
+          dx: 5,
+          dy: 5,
+          radius: 100,
+          color: 'orange'
+          };
+
+          ball4 = {
+          x: 650,
+          y: 140,
+          dx: 17,
+          dy: 3,
+          radius: 100,
+          color: 'green'
+          };
+
+          timer_is_on = 0;
+          clearInterval(v);
+          startCircles();
+
+        }
+
+        canvasStart(ball1);
+        canvasStart(ball2);
+        canvasStart(ball3);
+        canvasStart(ball4);
+
+    </code></pre>
+
+
+    <h3>SMALL CIRCLE BOUNCING INSIDE A BIG STATIONARY CIRCLE</h3>
+
+    <button class="btn btn-lg" id="reset7">Stop</button>
+    <button class="btn btn-lg" id="startBalls7">Start</button>
+
+
+    <div>
+      <canvas id="myCanvas13" width="960" height="700">
+        It seems that your browser doesn't support HTML5 Canvas.
+      </canvas>
+    </div>
+
+    <pre><code>
+        let canvas = document.getElementById("myCanvas");
+        let ctx = canvas.getContext('2d');
+        let timer_is_on = 0;
+        let y;
+
+        let circle1 = {x: 480, y: 350, dx: 0, dy: 0, radius: 300, color: 'blue'};
+        let circle2 = {x: 380, y: 250, dx: 5, dy: 5, radius: 50, color: 'red'};
+
+        function draw() {
+          ctx.clearRect(0,0,canvas.width,canvas.height);
+          drawBigCircle();
+          updateSmallCircle();
+          circleDeflect();
+        }
+
+        function drawBigCircle() {
+          ctx.beginPath();
+          ctx.arc(circle1.x, circle1.y, circle1.radius, 0, Math.PI*2, true);
+          ctx.closePath();
+          ctx.fillStyle = circle1.color;
+          ctx.fill();
+        }
+
+        function updateSmallCircle() {
+          circle2.x += circle2.dx;
+          circle2.y += circle2.dy;
+
+          ctx.beginPath();
+          ctx.arc(circle2.x, circle2.y, circle2.radius, 0, Math.PI*2, true);
+          ctx.closePath();
+          ctx.fillStyle = circle2.color;
+          ctx.fill();
+        }
+
+        function circleDeflect() {
+          let xDist = (circle2.x-circle1.x) * (circle2.x-circle1.x);
+          let yDist = (circle2.y-circle1.y) * (circle2.y-circle1.y);
+
+          if ( (Math.sqrt(xDist + yDist) + circle2.radius) > (circle1.radius) ){
+            circle2.dx = -circle2.dx;
+            circle2.dy = -circle2.dy;
+          }
+        }
+
+        function stop() {
+            clearInterval(y);
+            timer_is_on = 0;
+        }
+
+        function startCircle() {
+          if (!timer_is_on) {
+              timer_is_on = 1;
+              y = setInterval(draw,50);
+          }
+        }
+
+        drawBigCircle();
+        updateSmallCircle();
+
+    </code></pre>
+
+  </div>
+  </div>
+
+  <script src="js/Circles4.js"></script>
+  <script src="js/Circles5.js"></script>
+  <script src="js/Circles7.js"></script>
+  <script src="js/Circles8.js"></script>
+  <script src="js/Circles12.js"></script>
+
+</body>
+</html>
