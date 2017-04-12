@@ -4,12 +4,20 @@ html {
   font-family: helvetica, sans-serif;
 }
 
+/*body {
+    padding-top: 105px;
+}*/
+
+/*.container {
+    margin-top: 0;
+}*/
+
 .center-block {
   width: 960px;
   display: block;
   margin-right: auto;
   margin-left: auto;
-  margin-top: 80px
+  /*margin-top: 80px*/
 }
 
 p {
